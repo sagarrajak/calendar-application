@@ -18,18 +18,12 @@ mongoose.connect(config.database,function(err){
 
 app.use(body_parser.urlencoded());
 app.use(body_parser.json());
-
-
 var eventRoute = require('./app/api')(app,express);
 app.use('/api',eventRoute);
-
-
 app.use(express.static(__dirname));
 app.get('*',function(req,res){
     res.sendFile( __dirname + '/app/frontend/template/index.html' );
 });
-
-
 app.listen( config.port ,function(err){
     if(err)
         console.log(err);
