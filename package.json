@@ -2,9 +2,9 @@
   "name": "story_app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "server.js"
+    "start": "node server.js"
   },
   "author": "sagar rajak",
   "license": "ISC",
