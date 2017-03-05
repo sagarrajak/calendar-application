@@ -3,5 +3,5 @@
  */
 module.exports={
     "database" :  "mongodb://sagarrajak:sagar123@ds119380.mlab.com:19380/calendar-app",
-    "port" : 3000||process.env.port
+    "port" : 4000||process.env.port
 }
