@@ -5,9 +5,10 @@
 var mongoose = require('mongoose');
 var express = require('express');
 var body_parser = require('body-parser');
+var config = require('../simple_story_app/app/config');
 var app = express();
 
-mongoose.connect('mongodb://sagarrajak:sagar123@ds145379.mlab.com:45379/calendar-app',function(err){
+mongoose.connect(config.database,function(err){
     if(err)
         console.log(err);
     else
@@ -29,7 +30,7 @@ app.get('*',function(req,res){
 });
 
 
-app.listen(3000,function(err){
+app.listen( config.port ,function(err){
     if(err)
         console.log(err);
     else
