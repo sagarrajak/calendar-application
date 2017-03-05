@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <!--cloud link files-->
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+
+    <!--node module files-->
+    <script src="../../../node_modules/moment/moment.js"></script>
+    <script src="../../../node_modules/angular/angular.js"></script>
+    <script src="../../../node_modules/angular-animate/angular-animate.js"></script>
+    <script src="../../../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="../../../node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+    <script src="../../../node_modules/rrule/lib/rrule.js"></script>
+    <script src="../../../node_modules/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js"></script>
+    <script src="../../../node_modules/angular-moment-picker/dist/angular-moment-picker.js"></script>
+
+    <!--file added-->
+    <script type="text/javascript" src="app/frontend/controller/main.js"></script>
+    <script type="text/javascript" src="app/frontend/factory.js"></script>
+
+    <!--css file-->
+    <link  rel="stylesheet"  href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css" >
+    <link  rel="stylesheet"  href="../../../node_modules/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" >
+    <link  rel="stylesheet" href="../../../node_modules/angular-bootstrap-colorpicker/css/colorpicker.css">
+    <link  rel="stylesheet"  href="../../../node_modules/angular-moment-picker/dist/angular-moment-picker.css">
+
+
+</head>
+    <body class="container">
+    <div ng-app="app">
+        <div ng-controller= "myCon as co" >
+
+            <h2 class="text-center">{{ co.calendarTitle }}</h2>
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <div class="btn-group">
+                        <button
+                                class="btn btn-primary"
+                                mwl-date-modifier
+                                date="co.viewDate"
+                                decrement="co.calendarView"
+                                ng-click="co.cellIsOpen = false">
+                            Previous
+                        </button>
+                        <button
+                                class="btn btn-default"
+                                mwl-date-modifier
+                                date="co.viewDate"
+                                set-to-today
+                                ng-click="co.cellIsOpen = false">
+                            Today
+                        </button>
+                        <button
+                                class="btn btn-primary"
+                                mwl-date-modifier
+                                date="co.viewDate"
+                                increment="co.calendarView"
+                                ng-click="co.cellIsOpen = false">
+                            Next
+                        </button>
+                    </div>
+                </div>
+                <br class="visible-xs visible-sm">
+                <div class="col-md-6 text-center">
+                    <div class="btn-group">
+                        <label class="btn btn-primary" ng-model="co.calendarView" uib-btn-radio="'year'" ng-click="co.cellIsOpen = false">Year</label>
+                        <label class="btn btn-primary" ng-model="co.calendarView" uib-btn-radio="'month'" ng-click="co.cellIsOpen = false">Month</label>
+                        <label class="btn btn-primary" ng-model="co.calendarView" uib-btn-radio="'week'" ng-click="co.cellIsOpen = false">Week</label>
+                        <label class="btn btn-primary" ng-model="co.calendarView" uib-btn-radio="'day'" ng-click="co.cellIsOpen = false">Day</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <mwl-calendar
+                    events="events"
+                    view="co.calendarView"
+                    view-title="co.calendarTitle"
+                    view-date="co.viewDate"
+                    on-event-click="co.eventClicked(calendarEvent)"
+                    on-event-times-changed="co.eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+                    cell-is-open="co.cellIsOpen"
+                    day-view-start="06:00"
+                    day-view-end="22:59"
+                    day-view-split="30"
+                    cell-modifier="co.modifyCell(calendarCell)"
+                    on-timespan-click="co.timespanClicked(calendarDate, calendarCell)"
+                    cell-auto-open-disabled="true">
+            </mwl-calendar>
+
+            <h3 id="event-editor">
+                Create events</h3>
+            <table class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Starts at</th>
+                            <th>Ends at</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                    <tr>
+                          <th>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="set title"
+                                        ng-model="created.title"
+                                />
+                          </th>
+                          <th>
+                              <input
+                                      class="form-control"
+                                      moment-picker="created.startsAt"
+                                      type="datetime"
+                                      format="DD/MM/YYYY  h:mma"
+                                      placeholder="start time"
+                                      ng-model="created.startsAt">
+                          </th>
+                          <th>
+                              <input
+                                      class="form-control"
+                                      moment-picker="created.endsAt"
+                                      format="DD/MM/YYYY  h:mma"
+                                      type="datetime"
+                                      placeholder="end time"
+                                      ng-model="created.endsAt">
+                          </th>
+                    </tr>
+                </tbody>
+              </table>
+            <button
+                    ng-click="co.addEvent(created)"
+                    class="btn btn-primary pull-right">
+                Save
+            </button>
+            <div class="clearfix"></div>
+
+
+            <table class="table table-bordered ">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Starts at</th>
+                        <th>Ends at</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                <tr ng-repeat="event in moments track by $index">
+                    <td>
+                        <input  type="text"
+                                class="form-control"
+                                ng-model="event.title">
+                    </td>
+                    <td>
+                        <p class="input-group" style="max-width: 250px">
+                                <input
+                                    class="form-control"
+                                    moment-picker="event.startsAt"
+                                    type="text"
+                                    format="DD/MM/YYYY  h:mma"
+                                    ng-model="event.startsAt">
+                        </p>
+                    </td>
+                    <td>
+                        <p class="input-group" style="max-width: 250px">
+                            <input
+                                    moment-picker="event.endsAt"
+                                    format="DD/MM/YYYY  h:mma"
+                                    type="text"
+                                    class="form-control"
+                                    ng-model="event.endsAt"
+                            >
+                        </p>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="co.deleteEve(event._id)">
+                            Remove
+                        </button>
+                        <button class="btn btn-primary" ng-click="co.reset(event)">
+                            Save
+                        </button>
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+    </div>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "story_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sagar rajak",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.6.2",
+    "angular-animate": "^1.6.2",
+    "angular-bootstrap-calendar": "^0.28.0",
+    "angular-bootstrap-colorpicker": "^3.0.25",
+    "angular-moment-picker": "^0.9.7",
+    "angular-ui-bootstrap": "^2.5.0",
+    "body-parser": "^1.17.0",
+    "bootstrap": "^3.3.7",
+    "calender": "^1.0.3",
+    "express": "^4.14.1",
+    "fullcalendar": "3.2.0",
+    "interact": "0.0.3",
+    "interact-js": "^2.0.1",
+    "moment": "^2.17.1",
+    "mongoose": "^4.8.4",
+    "rrule": "^2.1.0",
+    "ui-bootstrap": "^0.1.10"
+  }
+}
